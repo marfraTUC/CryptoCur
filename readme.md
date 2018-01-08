@@ -9,9 +9,13 @@ Therefore. the tool helps you to simply see your current crypto currency’s, ther
 All your data are stored locally on your machine. 
 
 
+
+
 === Current state ===
 
 CryptoCur is in a very early development state and still suffers from teething troubles. However, if you are interested and have feature requests please let me know, so that I know there is interest in that kind of program. 
+
+
 
 
 === How to use and where to find documentation? ===
@@ -20,9 +24,13 @@ Since CryptoCur is a early development phase there is now documentation availabl
 
 
 
+
+
 === How to use it ===
 
 Just download the .jar file and run it. Alternatively you can download the java source and compile it. 
+
+
 
 
 === Licence ===
