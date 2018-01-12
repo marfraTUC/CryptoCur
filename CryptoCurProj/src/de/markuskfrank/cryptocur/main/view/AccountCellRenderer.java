@@ -9,7 +9,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class AccountCellRenderer extends DefaultTableCellRenderer{
  
 	
-	    public AccountCellRenderer() {
+	    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8599329467024832928L;
+
+
+		public AccountCellRenderer() {
 	    }
 
 	

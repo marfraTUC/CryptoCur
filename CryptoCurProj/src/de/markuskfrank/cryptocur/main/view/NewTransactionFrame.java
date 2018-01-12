@@ -20,7 +20,12 @@ import de.markuskfrank.cryptocur.main.model.Transaction;
 
 public class NewTransactionFrame extends JFrame implements ActionListener {
 
-	private final JComboBox action, curIn, curOut;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7085158405627350605L;
+	private final JComboBox<TradeActions> action;
+	private final JComboBox<Currencys> curIn, curOut;
 	private final JTextArea amountIn, amountOut;
 	private final MainControler controler;
 	private final Account account;
@@ -40,8 +45,8 @@ public class NewTransactionFrame extends JFrame implements ActionListener {
 		save = new JButton("save");
 		save.addActionListener(this);
 
-		curIn = new JComboBox(Currencys.values());
-		curOut = new JComboBox(Currencys.values());
+		curIn = new JComboBox<Currencys>(Currencys.values());
+		curOut = new JComboBox<Currencys>(Currencys.values());
 		action = new JComboBox<>(TradeActions.values());
 
 		amountIn = new JTextArea();

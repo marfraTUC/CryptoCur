@@ -2,18 +2,19 @@ package de.markuskfrank.cryptocur.main.view;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.markuskfrank.cryptocur.main.bussineslogic.MainControler;
 import de.markuskfrank.cryptocur.main.model.Account;
 
 public class AccountTransactionTableModel extends AbstractTableModel {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3932972187798303594L;
 	private String[] columnNames = { "Action", "Currency In", "Amount", "Currency Out", "Price" };
-	private final MainControler controler;
 	private final Account account;
 	
-	public AccountTransactionTableModel(MainControler controler, Account account) {
-		this.controler = controler;
+	public AccountTransactionTableModel(final Account account) {
 		this.account = account;
 		
 	}

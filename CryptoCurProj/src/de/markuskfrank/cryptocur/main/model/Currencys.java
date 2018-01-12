@@ -9,5 +9,6 @@ public enum Currencys {
 	ETH,
 	DOGE,
 	LTC,
-	TRX
+	TRX,
+	IOT
 }

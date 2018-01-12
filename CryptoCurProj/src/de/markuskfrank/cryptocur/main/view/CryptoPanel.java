@@ -9,6 +9,10 @@ import de.markuskfrank.cryptocur.main.model.Account;
 
 public abstract class CryptoPanel extends JPanel implements ComponentListener {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4973929999463079295L;
 	protected Account selectedAccount;
 	protected final MainControler controler; 
 	

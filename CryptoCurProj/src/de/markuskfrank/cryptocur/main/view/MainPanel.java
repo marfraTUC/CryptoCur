@@ -8,35 +8,35 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 
 import de.markuskfrank.cryptocur.main.bussineslogic.MainControler;
 
 public class MainPanel extends CryptoPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1049758324663168269L;
 	private final JPanel header = new JPanel(new GridLayout(2, 2));
 	private final JLabel name = new JLabel("not set");
 	private final JLabel investment = new JLabel("0.00");
 	private final JLabel currency = new JLabel("nAv");
 	private final JLabel earing = new JLabel("0.00");
-	private JComboBox action, curIn, curOut;
-	private JTextArea amountIn, amountOut;
 	private JButton transaction;
 	private JButton close;
 	private JButton update;
-	private JTable values;
-	private JTable transactions;
 	private JPanel dataContainer;
+	private Thread updater;
 
 	public MainPanel(MainControler controler) {
 		super(controler);
 		this.setLayout(new BorderLayout());
+		updater = new Thread();
 		init();
 
 	}
@@ -66,7 +66,6 @@ public class MainPanel extends CryptoPanel {
 		addTransactionButton(buttonRow);
 		addUpdateButton(buttonRow);
 
-		
 		header.add(nameRow);
 		header.add(buttonRow);
 		header.add(curRow);
@@ -95,7 +94,7 @@ public class MainPanel extends CryptoPanel {
 	}
 
 	private void addCloseButton(JPanel buttonRow) {
-		close = new JButton("close");
+		close = new JButton("close account");
 		close.addActionListener(new ActionListener() {
 
 			@Override
@@ -112,14 +111,28 @@ public class MainPanel extends CryptoPanel {
 		close.setEnabled(false);
 		buttonRow.add(close);
 	}
-	
-	private void addUpdateButton(JPanel buttonRow) {
+
+	private synchronized void addUpdateButton(JPanel buttonRow) {
+
 		update = new JButton("update");
 		update.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controler.updateCurrencys();
+				update.setText("update ...");
+				update.updateUI();
+				if (!updater.isAlive()) {
+					updater = new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							controler.updateCurrencys();
+							update.setText("update");
+							update.updateUI();
+						}
+					});
+					updater.start();
+				}
 			}
 		});
 
@@ -128,26 +141,28 @@ public class MainPanel extends CryptoPanel {
 	}
 
 	private void updateAccountInfo() {
-		
+
 		name.setText(selectedAccount.getAccountName());
 		investment.setText("" + selectedAccount.getValue());
 		currency.setText(selectedAccount.getCurrency().toString());
-		
+
 		dataContainer.removeAll();
-		
+
 		AccountValuesTableModel valueModel = new AccountValuesTableModel(selectedAccount.getAccountCurrencys(),
-				controler, selectedAccount);
-		
+				selectedAccount);
+
 		JTable accountValueTable = new JTable(valueModel);
-		//accountValueTable.setDefaultRenderer(Object.class, new AccountCellRenderer());
+		// accountValueTable.setDefaultRenderer(Object.class, new
+		// AccountCellRenderer());
 		dataContainer.add(new JScrollPane(accountValueTable));
-		
-		JTable accountTransactionTable = new JTable(new AccountTransactionTableModel(controler, selectedAccount));
-		//accountTransactionTable.setDefaultRenderer(Object.class, new AccountCellRenderer());
+
+		JTable accountTransactionTable = new JTable(new AccountTransactionTableModel(selectedAccount));
+		// accountTransactionTable.setDefaultRenderer(Object.class, new
+		// AccountCellRenderer());
 		dataContainer.add(new JScrollPane(accountTransactionTable));
-		
+
 		double profit = valueModel.getTotalValue() + selectedAccount.getValue();
-		earing.setText(profit + " "+selectedAccount.getCurrency().toString());
+		earing.setText(profit + " " + selectedAccount.getCurrency().toString());
 		if (profit > 0) {
 			earing.setForeground(new Color(76, 153, 0));
 		} else {

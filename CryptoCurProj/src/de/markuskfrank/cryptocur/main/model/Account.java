@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -70,10 +68,11 @@ public class Account {
 				break;
 			case sell:
 				tmp = result.get(transaction.getBuyCurrency());
-				result.put(transaction.getBuyCurrency(), new Double(tmp- transaction.getAmount()));
+				result.put(transaction.getBuyCurrency(), new Double(tmp + transaction.getAmount()));
 				
 				tmp = result.get(transaction.getPayCurrency());
-				result.put(transaction.getBuyCurrency(), new Double(tmp+ transaction.getPrice()));
+				result.put(transaction.getPayCurrency(), new Double(tmp - transaction.getPrice()));
+			
 				break;
 			case transfer:
 				tmp = result.get(transaction.getBuyCurrency());
@@ -84,7 +83,7 @@ public class Account {
 				break;
 			}
 		}
-		Logger.getGlobal().log(Level.SEVERE, "getAccountCurrencys"+ result.toString());
+		//Logger.getGlobal().log(Level.SEVERE, "getAccountCurrencys"+ result.toString());
 		
 		return result;
 	}

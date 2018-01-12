@@ -4,25 +4,27 @@ import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.markuskfrank.cryptocur.main.bussineslogic.MainControler;
 import de.markuskfrank.cryptocur.main.model.Account;
+import de.markuskfrank.cryptocur.main.model.CurrencyValueMarket;
 import de.markuskfrank.cryptocur.main.model.Currencys;
 
 public class AccountValuesTableModel extends AbstractTableModel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5107592367839112803L;
 	private final Object[] cur;
 	private final Map<Currencys, Double> values;
 	private String[] columnNames = { "Currency", "Amount","Crypto Value", "Total Value in:" };
-	private final MainControler controler;
 	private final Account account;
 	
-	public AccountValuesTableModel(Map<Currencys, Double> values, MainControler controler, Account account) {
+	public AccountValuesTableModel(Map<Currencys, Double> values, Account account) {
 		if(values.containsKey(account.getCurrency())){
 			values.remove(account.getCurrency());
 		}
 		this.cur = values.keySet().toArray();;
 		this.values = values;
-		this.controler = controler;
 		this.account = account;
 		
 	}
@@ -48,7 +50,7 @@ public class AccountValuesTableModel extends AbstractTableModel {
 			return values.get(cur[rowIndex]);
 		case 2:
 			try {
-				return controler.getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency());
+				return CurrencyValueMarket.getMarket().getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -56,7 +58,7 @@ public class AccountValuesTableModel extends AbstractTableModel {
 			
 		case 3:
 			try {
-				return (controler.getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency()) * values.get(cur[rowIndex]));
+				return (CurrencyValueMarket.getMarket().getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency()) * values.get(cur[rowIndex]));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -37,7 +37,7 @@ public class BitstampCurrencyGetter implements CurrencyGetter {
 	         result.append(line);
 	      }
 	      rd.close();
-	      
+	      Thread.sleep(100);
 	      JSONObject jsonObj = new JSONObject(result.toString());
 	      return jsonObj.getString(GET_INFO);
 	   }

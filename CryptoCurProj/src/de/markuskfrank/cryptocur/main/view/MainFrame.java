@@ -13,6 +13,10 @@ import de.markuskfrank.cryptocur.main.model.Account;
 
 public class MainFrame extends JFrame implements Observer, ComponentListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8960809738184972888L;
 	private final MainControler controler;
 	private List<CryptoPanel> panels; 
 	
@@ -29,14 +33,17 @@ public class MainFrame extends JFrame implements Observer, ComponentListener{
 		CryptoPanel list = new ListPanel(controler);
 		CryptoPanel main = new MainPanel(controler);
 		CryptoPanel infoBar = new CurrencyInfoBar(controler);
+		CryptoPanel statusBar = new InfoFooterBar(controler);
 		
 		this.add(list, BorderLayout.WEST);
 		this.add(main, BorderLayout.CENTER);
 		this.add(infoBar, BorderLayout.NORTH);
+		this.add(statusBar, BorderLayout.SOUTH);
 		
 		panels.add(list);
 		panels.add(main);
 		panels.add(infoBar);
+		panels.add(statusBar);
 		
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setVisible(true);

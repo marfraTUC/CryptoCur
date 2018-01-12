@@ -16,6 +16,10 @@ import de.markuskfrank.cryptocur.main.model.Account;
 
 public class ListPanel extends CryptoPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -185521290590716945L;
 	private JPanel listContainer;
 	private static final double WIDTH = 0.3;
 
