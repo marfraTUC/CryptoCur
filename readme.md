@@ -2,9 +2,9 @@
 
 CryptoCur is a small and simple Tool, that helps you to track your investments and crypto currency transactions.
 
-You can enter all your buying’s, selling’s, and transactions and organize them by different accounts (accounts in the sense of investment accounts).
+You can enter all your buying's, selling's, and transactions and organize them by different accounts (accounts in the sense of investment accounts).
 
-Therefore. the tool helps you to simply see your current crypto currency’s, there current value and your profit. 
+Therefore. the tool helps you to simply see your current crypto currency's, there current value and your profit. 
 
 All your data are stored locally on your machine. 
 
