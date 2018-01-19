@@ -1,12 +1,9 @@
 package de.markuskfrank.cryptocur.main.bussineslogic;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.bind.JAXBException;
 
 import de.markuskfrank.cryptocur.main.model.Account;
 import de.markuskfrank.cryptocur.main.model.CurrencyValueMarket;
@@ -40,8 +37,8 @@ public class MainControler {
 	private void save() {
 		System.out.println("save");
 		try {
-			XMLFileSaver.persistToXML(user);
-		} catch (FileNotFoundException | JAXBException e) {
+			XMLFileSaver.persistUserToXML(user, user.getPassword());
+		} catch ( Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

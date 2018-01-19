@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -87,6 +89,28 @@ public class Account {
 		
 		return result;
 	}
+	
+	public double getInvestmentOnly(Currencys cur){
+		double res = 0;
+		for(Transaction transaction : transactions){
+			if(transaction.getPayCurrency() == cur){
+				res += transaction.getPrice();
+			}
+		}
+		
+		return res;
+	}
+	
+	public double getReturnOnly(Currencys baseCurrency) {
+		double res = 0;
+		for(Transaction transaction : transactions){
+			if(transaction.getBuyCurrency() == baseCurrency){
+				res += transaction.getAmount();
+			}
+		}
+		
+		return res;
+	}
 
 	@XmlAttribute  
 	public double getValue() {		
@@ -114,5 +138,25 @@ public class Account {
 	public void setCurrency(Currencys currency) {
 		this.currency = currency;
 	}
+
+	public double getCurrentValue(Currencys baseCurrency) {
+		double res = 0;
+		for (Currencys aCurrencys : getAccountCurrencys().keySet()) {
+			if (aCurrencys != baseCurrency) {
+				try {
+					res += getAccountCurrencys().get(aCurrencys)
+							* CurrencyValueMarket.getMarket().getCurrencyValueIn(aCurrencys, baseCurrency);
+				} catch (Exception e) {
+					Logger.getGlobal().log(Level.WARNING,
+							"Could not get value for " + aCurrencys + " for base currency " + baseCurrency, e);
+					// e.printStackTrace();
+				}
+			}
+		}
+		return res;
+		
+	}
+
+
 	
 }

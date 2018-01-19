@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -21,24 +19,30 @@ public class User {
 	private String username;
 	private String firstname;
 	private String lastname;
+	private Currencys baseCurrency;
 	private String id;
+	private boolean isEncrypted;
+	private String password; 
 
 	public User() {
 		accountList = new TreeMap<String, Account>();
 	}
 
-	public User(String username, String firstname, String lastname) {
+	public User(String username, String firstname, String lastname, Currencys baseCurrency, String password) {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.baseCurrency = baseCurrency;
 		this.id = new Random().ints(6).toString();
 		accountList = new TreeMap<String, Account>();
+		this.password = password;
 	}
 
-	public User(String id, String username, String firstname, String lastname) {
+	public User(String id, String username, String firstname, String lastname, Currencys baseCurrency) {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.baseCurrency = baseCurrency;
 		this.id = id;
 		accountList = new TreeMap<String, Account>();
 	}
@@ -67,6 +71,16 @@ public class User {
 	@XmlElement
 	public Map<String, Account> getAccountList() {
 		return accountList;
+	}
+	
+	
+
+	public boolean isEncrypted() {
+		return isEncrypted;
+	}
+
+	public void setEncrypted(boolean isEncrypted) {
+		this.isEncrypted = isEncrypted;
 	}
 
 	@XmlElement
@@ -104,6 +118,15 @@ public class User {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	@XmlElement
+	public Currencys getBaseCurrency() {
+		return baseCurrency;
+	}
+
+	public void setBaseCurrency(Currencys baseCurrency) {
+		this.baseCurrency = baseCurrency;
+	}
 
 	public void addNewTransaction(Account account, Transaction transactions) {
 		accountList.get(account.getAccountName()).add(transactions);
@@ -124,6 +147,27 @@ public class User {
 		double result = 0;
 		for (Account aAccount : accountList.values()) {
 			if (aAccount.getCurrency() == baseCurrency) {
+				result += aAccount.getInvestmentOnly(baseCurrency);
+			}
+		}
+		return result;
+	}
+	
+	public Double getTotalReturn(Currencys baseCurrency) {
+		double result = 0;
+		for (Account aAccount : accountList.values()) {
+			if (aAccount.getCurrency() == baseCurrency) {
+				result += aAccount.getReturnOnly(baseCurrency);
+			}
+		}
+		return result;
+	}
+	
+	public Double getUnreturnedMoney(Currencys baseCurrency) {
+		double result = 0;
+		for (Account aAccount : accountList.values()) {
+			if (aAccount.getCurrency() == baseCurrency) {
+				if(aAccount.getAccountCurrencys().get(baseCurrency) > 0 )
 				result += aAccount.getAccountCurrencys().get(baseCurrency);
 			}
 		}
@@ -134,21 +178,18 @@ public class User {
 		double res = 0;
 		for (Account aAccount : accountList.values()) {
 			if (aAccount.getCurrency() == baseCurrency) {
-				for (Currencys aCurrencys : aAccount.getAccountCurrencys().keySet()) {
-					if (aCurrencys != baseCurrency) {
-						try {
-							res += aAccount.getAccountCurrencys().get(aCurrencys)
-									* CurrencyValueMarket.getMarket().getCurrencyValueIn(aCurrencys, baseCurrency);
-						} catch (Exception e) {
-							Logger.getGlobal().log(Level.WARNING,
-									"Could not get value for " + aCurrencys + " for base currency " + baseCurrency, e);
-							// e.printStackTrace();
-						}
-					}
-				}
+				res += aAccount.getCurrentValue(baseCurrency);
 			}
 		}
 		return res;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password){
+		this.password = password;
 	}
 
 }

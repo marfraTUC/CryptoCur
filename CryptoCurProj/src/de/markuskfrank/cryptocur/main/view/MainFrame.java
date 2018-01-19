@@ -3,9 +3,12 @@ package de.markuskfrank.cryptocur.main.view;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import de.markuskfrank.cryptocur.main.bussineslogic.MainControler;
@@ -29,6 +32,17 @@ public class MainFrame extends JFrame implements Observer, ComponentListener{
 	}
 
 	private void initFrame() {
+		
+		BufferedImage logo;
+		try {
+			logo = ImageIO.read(getClass().getResource("logo.png"));
+			setIconImage(logo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		
+		
 		panels = new ArrayList<CryptoPanel>();
 		CryptoPanel list = new ListPanel(controler);
 		CryptoPanel main = new MainPanel(controler);

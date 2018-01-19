@@ -94,29 +94,31 @@ public class InfoFooterBar extends CryptoPanel {
 	@Override
 	protected void updatePanel() {
 
-		double investments, values;
+		double investments, values,returnedMoney, totalProfit;
 		
 		update.setText(df.format(System.currentTimeMillis()));
 		
 		investments = user.getTotalInvestment(baseCurrency);
+		returnedMoney = user.getTotalReturn(baseCurrency);
 		investment.setText(formatter.format(investments)+ " " + baseCurrency.toString());
 		
 		values = user.getCurrenctValue(baseCurrency);
 		currentValue.setText(formatter.format(values)+ " " + baseCurrency.toString());
 		
-		profit.setText(formatter.format(investments + values)+ " " + baseCurrency.toString());
+		totalProfit = (investments - returnedMoney  - values)*-1;
+		profit.setText(formatter.format(totalProfit)+ " " + baseCurrency.toString());
 		
-		if(investments + values > 0){
+		if(returnedMoney + values > 0){
 			profit.setForeground(Color.GREEN);
 		}else {
 			profit.setForeground(Color.RED);
 		}
 		
 		if((investments + values) < 0){
-			increase.setText(formatter.format((investments / values - 1)*100 )+"%");
+			increase.setText(formatter.format((investments / (values+returnedMoney) - 1)*100 )+" %");
 			increase.setForeground(Color.RED);
 		}else {
-			increase.setText(formatter.format((values / Math.abs(investments)-1) * 100)+"%");
+			increase.setText(formatter.format(((values+returnedMoney) / Math.abs(investments)-1) * 100)+" %");
 			increase.setForeground(Color.GREEN);
 		}
 		
