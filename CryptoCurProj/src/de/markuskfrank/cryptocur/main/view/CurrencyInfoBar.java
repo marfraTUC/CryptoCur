@@ -3,6 +3,7 @@ package de.markuskfrank.cryptocur.main.view;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ComponentEvent;
+import java.text.DecimalFormat;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -19,6 +20,8 @@ public class CurrencyInfoBar extends CryptoPanel {
 	 */
 	private static final long serialVersionUID = -3926999411625460412L;
 	private static final Currencys baseCurrency = Currencys.EUR;
+	private static final DecimalFormat formatter = new DecimalFormat("#.######");
+	
 	
 	public CurrencyInfoBar(final MainControler controler) {
 		super(controler);
@@ -62,7 +65,7 @@ public class CurrencyInfoBar extends CryptoPanel {
 			curLable = new JLabel(aCur.toString());
 			curLable.setForeground(Color.WHITE);
 			try {
-				valueString = CurrencyValueMarket.getMarket().getCurrencyValueIn(aCur, baseCurrency)+" "+baseCurrency;
+				valueString = formatter.format(CurrencyValueMarket.getMarket().getCurrencyValueIn(aCur, baseCurrency))+" "+baseCurrency;
 				curValue = new JLabel(valueString);
 				curValue.setForeground(Color.WHITE);
 				

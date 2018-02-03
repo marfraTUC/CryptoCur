@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.markuskfrank.cryptocur.main.model.Account;
 import de.markuskfrank.cryptocur.main.model.CurrencyValueMarket;
@@ -34,8 +36,8 @@ public class MainControler {
 		save();
 	}
 
-	private void save() {
-		System.out.println("save");
+	public void save() {
+		Logger.getLogger("MainControler").log(Level.INFO, "Save");;
 		try {
 			XMLFileSaver.persistUserToXML(user, user.getPassword());
 		} catch ( Exception e) {
@@ -102,6 +104,12 @@ public class MainControler {
 
 	public User getCurrentUser() {
 		return user;
+	}
+
+	public void deleteTransaction(Account account, Transaction transaction) {
+		account.removeTransaction(transaction);
+		save();
+		setSelectedAccount(account.getAccountName());
 	}
 
 }

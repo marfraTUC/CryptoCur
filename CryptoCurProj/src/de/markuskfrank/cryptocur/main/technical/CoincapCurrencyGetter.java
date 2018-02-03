@@ -25,12 +25,13 @@ public class CoincapCurrencyGetter implements CurrencyGetter {
 		return singelton;
 	}
 
-
 	private String getCurrencyAsHTML(Currencys cur, Currencys target) throws Exception {
 		StringBuilder result = new StringBuilder();
+		
 		URL url = new URL(buildURL(cur));
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
+
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		String line;
 		while ((line = rd.readLine()) != null) {

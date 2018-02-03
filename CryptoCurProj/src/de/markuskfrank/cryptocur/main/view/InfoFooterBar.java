@@ -108,14 +108,15 @@ public class InfoFooterBar extends CryptoPanel {
 		totalProfit = (investments - returnedMoney  - values)*-1;
 		profit.setText(formatter.format(totalProfit)+ " " + baseCurrency.toString());
 		
-		if(returnedMoney + values > 0){
+		
+		if(totalProfit > 0){
 			profit.setForeground(Color.GREEN);
 		}else {
 			profit.setForeground(Color.RED);
 		}
 		
-		if((investments + values) < 0){
-			increase.setText(formatter.format((investments / (values+returnedMoney) - 1)*100 )+" %");
+		if((totalProfit) < 0){
+			increase.setText("-"+formatter.format(( Math.abs((values+returnedMoney) / investments - 1))*100 )+" %");
 			increase.setForeground(Color.RED);
 		}else {
 			increase.setText(formatter.format(((values+returnedMoney) / Math.abs(investments)-1) * 100)+" %");

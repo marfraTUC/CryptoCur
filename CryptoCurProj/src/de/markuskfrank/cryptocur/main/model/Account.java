@@ -157,6 +157,10 @@ public class Account {
 		
 	}
 
+	public void removeTransaction(Transaction transaction) {
+		transactions.remove(transaction);
+	}
+
 
 	
 }

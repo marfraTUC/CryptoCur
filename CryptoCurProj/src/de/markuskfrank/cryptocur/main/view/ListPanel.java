@@ -105,7 +105,6 @@ public class ListPanel extends CryptoPanel{
 		JButton button;
 		for(Account account : controler.getAccounts()){
 			button = new JButton(account.getAccountName());
-			System.out.println(account.getAccountName());
 			button.addActionListener(new ActionListener() {
 				
 				@Override

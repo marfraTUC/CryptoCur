@@ -1,4 +1,4 @@
-package de.markuskfrank.cryptocur.main.view;
+package de.markuskfrank.cryptocur.main.view.tables;
 
 import java.awt.Color;
 import java.awt.Component;

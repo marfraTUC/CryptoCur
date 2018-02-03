@@ -1,5 +1,6 @@
-package de.markuskfrank.cryptocur.main.view;
+package de.markuskfrank.cryptocur.main.view.tables;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
@@ -10,6 +11,10 @@ import de.markuskfrank.cryptocur.main.model.Currencys;
 
 public class AccountValuesTableModel extends AbstractTableModel {
 
+	private static final int TOTAL_VALUE = 3;
+	private static final int CUR_VALUE = 2;
+	private static final int AMOUNT = 1;
+	private static final int CURRENCY = 0;
 	/**
 	 * 
 	 */
@@ -18,6 +23,7 @@ public class AccountValuesTableModel extends AbstractTableModel {
 	private final Map<Currencys, Double> values;
 	private String[] columnNames = { "Currency", "Amount","Crypto Value", "Total Value in:" };
 	private final Account account;
+	private static final DecimalFormat formatter = new DecimalFormat("#.#####");
 	
 	public AccountValuesTableModel(Map<Currencys, Double> values, Account account) {
 		if(values.containsKey(account.getCurrency())){
@@ -44,21 +50,21 @@ public class AccountValuesTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
-		case 0:
+		case CURRENCY:
 			return cur[rowIndex];
-		case 1:
-			return values.get(cur[rowIndex]);
-		case 2:
+		case AMOUNT:
+			return formatter.format(values.get(cur[rowIndex]));
+		case CUR_VALUE:
 			try {
-				return CurrencyValueMarket.getMarket().getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency());
+				return formatter.format(CurrencyValueMarket.getMarket().getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency()));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-		case 3:
+		case TOTAL_VALUE:
 			try {
-				return (CurrencyValueMarket.getMarket().getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency()) * values.get(cur[rowIndex]));
+				return formatter.format((CurrencyValueMarket.getMarket().getCurrencyValueIn((Currencys)cur[rowIndex], account.getCurrency()) * values.get(cur[rowIndex])));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

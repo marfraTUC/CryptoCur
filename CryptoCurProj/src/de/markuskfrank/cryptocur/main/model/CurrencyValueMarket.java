@@ -16,7 +16,7 @@ public class CurrencyValueMarket {
 
 	private CurrencyValueMarket() {
 		this.currencyValue = new HashMap<>();
-		marketplace = Marketplace.getMarketplace(Marketplace.CRYPTONATOR);
+		marketplace = Marketplace.getMarketplace(Marketplace.CRYPTOCOMPARE);
 		market = this;
 	}
 

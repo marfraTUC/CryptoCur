@@ -9,26 +9,26 @@ import org.json.JSONObject;
 
 import de.markuskfrank.cryptocur.main.model.Currencys;
 
-public class CryptonatorCurrencyGetter implements CurrencyGetter {
+public class CryptoCompareCurrencyGetter implements CurrencyGetter {
 
-	private static final String URLString = "https://api.cryptonator.com/api/ticker/";
-	private static CryptonatorCurrencyGetter singelton;
+	private static final String URLString = "https://min-api.cryptocompare.com/data/price?";
+	private static CryptoCompareCurrencyGetter singelton;
 	private final String GET_INFO = "price";
 	
-	private CryptonatorCurrencyGetter() {
+	private CryptoCompareCurrencyGetter() {
 		singelton = this;
 	}
 	
-	public static synchronized CryptonatorCurrencyGetter getCurrencyGetter(){
+	public static synchronized CryptoCompareCurrencyGetter getCurrencyGetter(){
 		if(singelton == null){
-			new CryptonatorCurrencyGetter();
+			new CryptoCompareCurrencyGetter();
 		}
 		return singelton;
 	}
 	
-	private  String getCurrencyAsHTML(String cur) throws Exception {
+	private  Double getCurrencyAsHTML(Currencys cur, Currencys target) throws Exception {
 	      StringBuilder result = new StringBuilder();
-	      URL url = new URL(URLString+cur);
+	      URL url = new URL(buildURL(cur, target));
 	      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	      conn.setRequestMethod("GET");
 	      BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -39,12 +39,21 @@ public class CryptonatorCurrencyGetter implements CurrencyGetter {
 	      rd.close();
 	      Thread.sleep(100);
 	      JSONObject jsonObj = new JSONObject(result.toString());
-	      return jsonObj.getJSONObject("ticker").getString(GET_INFO);
+	      return jsonObj.getDouble(target.toString());
 	   }
+	
+	private String buildURL(Currencys cur, Currencys target) {
+		StringBuilder sb = new StringBuilder(URLString);
+		sb.append("fsym=");
+		sb.append(cur.toString());
+		sb.append("&tsyms=");
+		sb.append(target.toString());
+		return sb.toString();
+	}
 	
 	@Override
 	public double getCurrency(Currencys targtCur, Currencys sourceCur) throws Exception {
-		return Double.parseDouble(getCurrencyAsHTML(targtCur.toString().toLowerCase()+"-"+sourceCur.toString().toLowerCase()));
+		return getCurrencyAsHTML(targtCur, sourceCur);
 	}
 
 	

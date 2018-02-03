@@ -14,8 +14,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 
 import de.markuskfrank.cryptocur.main.bussineslogic.MainControler;
+import de.markuskfrank.cryptocur.main.view.tables.AccountTransactionTableModel;
+import de.markuskfrank.cryptocur.main.view.tables.AccountValuesTableModel;
+import de.markuskfrank.cryptocur.main.view.tables.JTableButtonMouseListener;
+import de.markuskfrank.cryptocur.main.view.tables.JTableButtonRenderer;
 
 public class MainPanel extends CryptoPanel {
 
@@ -116,8 +121,9 @@ public class MainPanel extends CryptoPanel {
 		header.add(earningRow);
 		this.add(header, BorderLayout.NORTH);
 
-		dataContainer = new JPanel(new GridLayout(2, 1));
-
+		dataContainer = new JPanel(new GridLayout(2, 1, 10, 10));
+		dataContainer.setBorder(new EmptyBorder(0, 20, 10, 20));
+		
 		this.add(dataContainer);
 
 	}
@@ -129,7 +135,7 @@ public class MainPanel extends CryptoPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new NewTransactionFrame(selectedAccount, controler);
+				new TransactionFrame(selectedAccount, controler);
 			}
 		});
 
@@ -206,12 +212,18 @@ public class MainPanel extends CryptoPanel {
 		// AccountCellRenderer());
 		dataContainer.add(new JScrollPane(accountValueTable));
 
-		JTable accountTransactionTable = new JTable(new AccountTransactionTableModel(selectedAccount));
+		JTable accountTransactionTable = new JTable(new AccountTransactionTableModel(selectedAccount, controler));
+		accountTransactionTable.getColumn("Edit").setCellRenderer(new JTableButtonRenderer());
+		accountTransactionTable.getColumn("Delete").setCellRenderer(new JTableButtonRenderer());
+		accountTransactionTable.addMouseListener(new JTableButtonMouseListener(accountTransactionTable));
+		accountTransactionTable.getColumn("Edit").setPreferredWidth(30);
+		accountTransactionTable.getColumn("Delete").setPreferredWidth(30);
+		
 		// accountTransactionTable.setDefaultRenderer(Object.class, new
 		// AccountCellRenderer());
 		dataContainer.add(new JScrollPane(accountTransactionTable));
 
-		double profit = valueModel.getTotalValue() + selectedAccount.getValue();
+		double profit = (investments - returnedMoney  - values)*-1;
 		earing.setText(formatter.format(profit) + " " + selectedAccount.getCurrency().toString());
 		if (profit > 0) {
 			earing.setForeground(GREEN);
@@ -220,7 +232,7 @@ public class MainPanel extends CryptoPanel {
 		} else {
 			earing.setForeground(RED);
 			percent.setForeground(RED);
-			percent.setText("-"+formatter.format((investments / (values+returnedMoney) - 1)*100 )+" %");
+			percent.setText("-"+formatter.format(( Math.abs((values+returnedMoney) / investments - 1))*100 )+" %");
 		}
 
 	}
