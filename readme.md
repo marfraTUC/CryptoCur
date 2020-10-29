@@ -20,7 +20,7 @@ CryptoCur is in a very early development state and still suffers from teething t
 
 ## How to use and where to find documentation?
 
-Since CryptoCur is a early development phase there is now documentation available. However, feel free to try it out and in case you have question contact me: markus.frank@informatik.uni-stuttgart.de
+Since CryptoCur is a early development phase there is no documentation available. However, feel free to try it out and in case you have question contact me: markus.frank@informatik.uni-stuttgart.de
 
 
 
